@@ -1,0 +1,350 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+     <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+     <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+     <!ENTITY family "http://www.semanticweb.org/ontologies/2010/0/family.owl#" >]>
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/2010/0/family.owl#"
+      xml:base="http://www.semanticweb.org/ontologies/2010/0/family.owl"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+      xmlns:family="http://www.semanticweb.org/ontologies/2010/0/family.owl#"
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+     <owl:Ontology rdf:about=""/>
+     <!-- 
+     ///////////////////////////////////////////////////////////////////////////////////////
+     // Object Properties
+     ///////////////////////////////////////////////////////////////////////////////////////
+      -->
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#MarriedWith -->
+     <owl:ObjectProperty rdf:about="#MarriedWith">
+         <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasAncestor-->
+     <owl:ObjectProperty rdf:about="#hasAncestor">
+         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasAunt-->
+     <owl:ObjectProperty rdf:about="#hasAunt">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasAncestor"/>
+         <owl:inverseOf rdf:resource="#isAuntOf"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasBrother-->
+     <owl:ObjectProperty rdf:about="#hasBrother">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#sibling"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasChild-->
+     <owl:ObjectProperty rdf:about="#hasChild">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasOffSpring"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasCousin -->
+     <owl:ObjectProperty rdf:about="#hasCousin">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#sibling"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasDaughter -->
+     <owl:ObjectProperty rdf:about="#hasDaughter">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasChild"/>
+         <owl:inverseOf rdf:resource="#isDaughterOf"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasFather-->
+     <owl:ObjectProperty rdf:about="#hasFather">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasParent"/>
+         <owl:inverseOf rdf:resource="#isFatherOf"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasGrandChild-->
+     <owl:ObjectProperty rdf:about="#hasGrandChild">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasOffSpring"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasGrandDaughter-->
+     <owl:ObjectProperty rdf:about="#hasGrandDaughter">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasGrandChild"/>
+         <owl:inverseOf rdf:resource="#isGrandDaughterOf"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasGrandSon-->
+     <owl:ObjectProperty rdf:about="#hasGrandSon">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasGrandChild"/>
+         <owl:inverseOf rdf:resource="#isGrandSonOf"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasHusband-->
+     <owl:ObjectProperty rdf:about="#hasHusband">
+         <rdfs:domain rdf:resource="#female_family_member"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasMother -->
+     <owl:ObjectProperty rdf:about="#hasMother">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasParent"/>
+         <owl:inverseOf rdf:resource="#isMotherOf"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasOffSpring -->
+     <owl:ObjectProperty rdf:about="#hasOffSpring">
+         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasParent -->
+     <owl:ObjectProperty rdf:about="#hasParent">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasAncestor"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasSister -->
+     <owl:ObjectProperty rdf:about="#hasSister">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#sibling"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasSon -->
+     <owl:ObjectProperty rdf:about="#hasSon">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasChild"/>
+         <owl:inverseOf rdf:resource="#isSonOf"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasUncle -->
+     <owl:ObjectProperty rdf:about="#hasUncle">
+         <rdfs:domain rdf:resource="#family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#hasAncestor"/>
+         <owl:inverseOf rdf:resource="#isUncleOf"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#hasWife -->
+     <owl:ObjectProperty rdf:about="#hasWife">
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isAuntOf -->
+     <owl:ObjectProperty rdf:about="#isAuntOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#female_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isBrotherOf -->
+     <owl:ObjectProperty rdf:about="#isBrotherOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <owl:inverseOf rdf:resource="#hasBrother"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+         <rdfs:subPropertyOf rdf:resource="#sibling"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isCousinOf -->
+     <owl:ObjectProperty rdf:about="#isCousinOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#family_member"/>
+         <owl:inverseOf rdf:resource="#hasCousin"/>
+         <rdfs:subPropertyOf rdf:resource="#sibling"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isDaughterOf -->
+     <owl:ObjectProperty rdf:about="#isDaughterOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#female_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isFatherOf -->
+     <owl:ObjectProperty rdf:about="#isFatherOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isGrandDaughterOf -->
+     <owl:ObjectProperty rdf:about="#isGrandDaughterOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#female_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isGrandSonOf -->
+     <owl:ObjectProperty rdf:about="#isGrandSonOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isHusbandOf -->
+     <owl:ObjectProperty rdf:about="#isHusbandOf">
+         <rdfs:range rdf:resource="#female_family_member"/>
+         <owl:inverseOf rdf:resource="#hasHusband"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isMotherOf -->
+     <owl:ObjectProperty rdf:about="#isMotherOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#female_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isSisterOf -->
+     <owl:ObjectProperty rdf:about="#isSisterOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#female_family_member"/>
+         <owl:inverseOf rdf:resource="#hasSister"/>
+         <rdfs:subPropertyOf rdf:resource="#sibling"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isSonOf -->
+     <owl:ObjectProperty rdf:about="#isSonOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isUncleOf -->
+     <owl:ObjectProperty rdf:about="#isUncleOf">
+         <rdfs:range rdf:resource="#family_member"/>
+         <rdfs:domain rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#isWifeOf -->
+     <owl:ObjectProperty rdf:about="#isWifeOf">
+         <rdfs:domain rdf:resource="#female_family_member"/>
+         <owl:inverseOf rdf:resource="#hasWife"/>
+         <rdfs:range rdf:resource="#male_family_member"/>
+     </owl:ObjectProperty>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#sibling -->
+     <owl:ObjectProperty rdf:about="#sibling">
+         <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+     </owl:ObjectProperty>
+     <!-- 
+     ///////////////////////////////////////////////////////////////////////////////////////
+     // Classes
+     ///////////////////////////////////////////////////////////////////////////////////////
+      -->
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#family -->
+     <owl:Class rdf:about="#family"/>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#family_member -->
+     <owl:Class rdf:about="#family_member">
+         <rdfs:subClassOf rdf:resource="#family"/>
+     </owl:Class>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#female_family_member -->
+     <owl:Class rdf:about="#female_family_member">
+         <rdfs:subClassOf rdf:resource="#family_member"/>
+         <owl:disjointWith rdf:resource="#male_family_member"/>
+     </owl:Class>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#male_family_member -->
+     <owl:Class rdf:about="#male_family_member">
+         <rdfs:subClassOf rdf:resource="#family_member"/>
+     </owl:Class>
+     <!-- 
+     ///////////////////////////////////////////////////////////////////////////////////////
+     // Individuals
+     ///////////////////////////////////////////////////////////////////////////////////////
+      -->
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Anna -->
+     <owl:Thing rdf:about="#Anna">
+         <rdf:type rdf:resource="#female_family_member"/>
+         <MarriedWith rdf:resource="#Bob"/>
+         <hasHusband rdf:resource="#Bob"/>
+         <isWifeOf rdf:resource="#Bob"/>
+         <hasSon rdf:resource="#John"/>
+     </owl:Thing>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Bob
+ -->
+     <male_family_member rdf:about="#Bob">
+         <rdf:type rdf:resource="&owl;Thing"/>
+         <hasWife rdf:resource="#Anna"/>
+         <MarriedWith rdf:resource="#Anna"/>
+         <isHusbandOf rdf:resource="#Anna"/>
+         <hasBrother rdf:resource="#James"/>
+         <hasFather rdf:resource="#Jim"/>
+         <hasSon rdf:resource="#John"/>
+         <hasMother rdf:resource="#Kate"/>
+         <hasSister rdf:resource="#Lily"/>
+         <hasSister rdf:resource="#Lucy"/>
+     </male_family_member>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Holly
+ -->
+     <owl:Thing rdf:about="#Holly">
+         <rdf:type rdf:resource="#female_family_member"/>
+         <hasHusband rdf:resource="#James"/>
+         <isWifeOf rdf:resource="#James"/>
+         <MarriedWith rdf:resource="#James"/>
+         <hasSon rdf:resource="#Sam"/>
+     </owl:Thing>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#James
+ -->
+     <male_family_member rdf:about="#James">
+         <rdf:type rdf:resource="&owl;Thing"/>
+         <hasBrother rdf:resource="#Bob"/>
+         <MarriedWith rdf:resource="#Holly"/>
+         <hasWife rdf:resource="#Holly"/>
+         <isHusbandOf rdf:resource="#Holly"/>
+         <hasFather rdf:resource="#Jim"/>
+         <hasMother rdf:resource="#Kate"/>
+         <hasSister rdf:resource="#Lily"/>
+         <hasSister rdf:resource="#Lucy"/>
+         <hasSon rdf:resource="#Sam"/>
+     </male_family_member>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Jim
+ -->
+     <owl:Thing rdf:about="#Jim">
+         <rdf:type rdf:resource="#male_family_member"/>
+         <hasSon rdf:resource="#Bob"/>
+         <hasSon rdf:resource="#James"/>
+         <hasWife rdf:resource="#Kate"/>
+         <MarriedWith rdf:resource="#Kate"/>
+         <isHusbandOf rdf:resource="#Kate"/>
+         <hasDaughter rdf:resource="#Lily"/>
+         <hasDaughter rdf:resource="#Lucy"/>
+     </owl:Thing>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#John
+ -->
+     <owl:Thing rdf:about="#John">
+         <rdf:type rdf:resource="#male_family_member"/>
+         <hasMother rdf:resource="#Anna"/>
+         <hasFather rdf:resource="#Bob"/>
+     </owl:Thing>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Kate
+ -->
+     <owl:Thing rdf:about="#Kate">
+         <rdf:type rdf:resource="#female_family_member"/>
+         <hasSon rdf:resource="#Bob"/>
+         <hasSon rdf:resource="#James"/>
+         <isWifeOf rdf:resource="#Jim"/>
+         <hasHusband rdf:resource="#Jim"/>
+         <MarriedWith rdf:resource="#Jim"/>
+         <hasDaughter rdf:resource="#Lily"/>
+         <hasDaughter rdf:resource="#Lucy"/>
+     </owl:Thing>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Lily
+ -->
+     <female_family_member rdf:about="#Lily">
+         <rdf:type rdf:resource="&owl;Thing"/>
+         <hasBrother rdf:resource="#Bob"/>
+         <hasBrother rdf:resource="#James"/>
+         <hasFather rdf:resource="#Jim"/>
+         <hasMother rdf:resource="#Kate"/>
+         <hasSister rdf:resource="#Lucy"/>
+     </female_family_member>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Lucy
+ -->
+     <owl:Thing rdf:about="#Lucy">
+         <rdf:type rdf:resource="#female_family_member"/>
+         <hasBrother rdf:resource="#Bob"/>
+         <hasBrother rdf:resource="#James"/>
+         <hasFather rdf:resource="#Jim"/>
+         <hasMother rdf:resource="#Kate"/>
+         <hasSister rdf:resource="#Lily"/>
+     </owl:Thing>
+     <!-- http://www.semanticweb.org/ontologies/2010/0/family.owl#Sam
+ -->
+     <owl:Thing rdf:about="#Sam">
+         <rdf:type rdf:resource="#male_family_member"/>
+         <hasMother rdf:resource="#Holly"/>
+         <hasFather rdf:resource="#James"/>
+     </owl:Thing>
+</rdf:RDF>
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net
+ -->
