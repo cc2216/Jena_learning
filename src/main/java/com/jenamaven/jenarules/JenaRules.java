@@ -6,7 +6,15 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -15,6 +23,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.ReasonerRegistry;
 import org.apache.jena.reasoner.ValidityReport;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
@@ -42,8 +51,11 @@ public class JenaRules {
 					System.out.println("Please input the name of rules file:"); 
 					String fileName = readString();
 					familyTree.addRulesFile(fileName);
+				} else if(option == 3) {
+					System.out.println("Using SPARQL query: ");
+					familyTree.usingSPARQL();
 				} else {
-					System.out.println("Option is wrong!");
+					System.out.println("Option is wrong! ");
 				}
 			}	
 		} catch (IOException e){
@@ -66,6 +78,23 @@ public class JenaRules {
 		
 	}
 	
+	public JenaRules(){
+		dataFile = JenaRules.class.getClassLoader().getResource("family.owl").getPath(); //path of family owl
+		familyRules = JenaRules.class.getClassLoader().getResource("family.rules").getPath();//path of family rules
+		//String familyRules2 = JenaRules.class.getClassLoader().getResource("family2.rules").getPath();//path of family rules
+		prefix = "http://www.semanticweb.org/ontologies/2010/0/family.owl#"; //main namespace
+		
+		//setup the reasoner with rules
+		this.rules = Rule.rulesFromURL(familyRules);
+		this.data = FileManager.get().loadModel(dataFile);
+		Reasoner owlReasoner = ReasonerRegistry.getOWLReasoner();
+		this.infmodel = ModelFactory.createInfModel(owlReasoner, data);
+		this.reasoner = new GenericRuleReasoner(this.rules); //customed reason by rules
+		this.infmodel = ModelFactory.createInfModel(reasoner, this.infmodel);
+		this.infmodel.removeNsPrefix(this.prefix);
+		
+	};
+	
 	private static String readString() throws IOException {
         String userInput;  
         sc=new Scanner(System.in);
@@ -81,32 +110,17 @@ public class JenaRules {
 	private static int readOption() throws IOException {
         int option;  
         sc = new Scanner(System.in);  
-        System.out.println("If you want add new rules please input \'1\', else input \'2\' to query the family tree:");  
+        System.out.println("If you want add new rules please input \'1\', input \'2\' to query the family tree by name, input \'3\' to query the family tree by SPARQL:");  
         option=sc.nextInt();  
         return option;
     }
-	
-	public JenaRules(){
-		dataFile = JenaRules.class.getClassLoader().getResource("family.owl").getPath(); //path of family owl
-		familyRules = JenaRules.class.getClassLoader().getResource("family.rules").getPath();//path of family rules
-		String familyRules2 = JenaRules.class.getClassLoader().getResource("family2.rules").getPath();//path of family rules
-		prefix = "http://www.semanticweb.org/ontologies/2010/0/family.owl#"; //main namespace
-		
-		//setup the reasoner with rules
-		this.rules = Rule.rulesFromURL(familyRules);
-		this.data = FileManager.get().loadModel(dataFile);
-		this.reasoner = new GenericRuleReasoner(this.rules);
-		this.infmodel = ModelFactory.createInfModel(reasoner, data);
-		this.infmodel.removeNsPrefix(this.prefix);
-		
-	};
 	
 	public void addRulesFile(String fileName) {
 		//Add new rules file		
 		String newFamilyRules = JenaRules.class.getClassLoader().getResource(fileName).getPath();//path of family rules
 		List<Rule> newRules = Rule.rulesFromURL(newFamilyRules);
 		Reasoner newReasoner = new GenericRuleReasoner(newRules);
-		this.infmodel = ModelFactory.createInfModel(newReasoner, infmodel);
+		this.infmodel = ModelFactory.createInfModel(newReasoner, infmodel); //create new inference by adding new rules
 		this.infmodel.removeNsPrefix(this.prefix);
 	}
 	
@@ -125,6 +139,26 @@ public class JenaRules {
 			return null;
 		}
 		
+	}
+	
+	public void usingSPARQL() {
+		String queryString = "SELECT ?x WHERE { <"+ this.prefix + "Anna> <" + this.prefix + "isMotherOf> "+" ?x }";
+		System.out.println("SPARQL query is: " + queryString);
+		Query query = QueryFactory.create(queryString);
+		QueryExecution qe = QueryExecutionFactory.create(query, this.infmodel);
+		ResultSet results = qe.execSelect();
+		ResultSetFormatter.out(System.out, results, query);
+		
+		/* Output results without prefix
+		while (results.hasNext()) {
+	        QuerySolution soln = results.nextSolution(); 
+	        String s = soln.get("x").toString();
+	        StringTokenizer token = new StringTokenizer(s,"#");
+	        token.nextToken();       
+	        System.out.println(token.nextToken());       
+		}*/
+		
+		qe.close();
 	}
 	
 	public Resource findResource(String name) {
